@@ -1,0 +1,66 @@
+<html>
+<header>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
+
+</header>
+
+<body>
+
+    <canvas id="canvas" width="150" height="60"></canvas>
+
+    <script>
+        // const model = tf.loadLayersModel('model.json');
+        var model;
+        tf.loadLayersModel('model.json').then((models) => {
+            model = models
+            console.log('loaded model')
+            // if (callbackOnLoad) {
+            //     callbackOnLoad()
+            // }
+        });
+
+        function predict(x, y) {
+            // console.log()
+            draw(model.predict(tf.tensor2d([[x, y]])).dataSync())
+        }
+
+
+        var canvas = document.getElementById('canvas');
+        var ctx = canvas.getContext('2d');
+
+
+        function draw(image_data) {
+            var imageData = ctx.createImageData(150, 60);
+            for (var i = 0; i < imageData.data.length; i += 4) {
+                const col = image_data[i / 4] * 255
+                // const col = 100
+                imageData.data[i] = col;     // red
+                imageData.data[i + 1] = col; // green
+                imageData.data[i + 2] = col; // blue
+                imageData.data[i + 3] = 255;
+            }
+            // console.log(imageData)
+            // console.log(ctx)
+            ctx.putImageData(imageData, 0, 0);
+        }
+
+
+        var mouse_x = 0
+        var mouse_y = 0
+
+
+        document.addEventListener("mousemove", function (e) {
+            var event = e || window.event;
+            mouse_x = event.pageX;
+            mouse_y = event.pageY;
+        });
+
+
+        setInterval(function () {
+            predict(mouse_x, mouse_y)
+        }, 1000 / 15);
+
+    </script>
+</body>
+
+</html>
