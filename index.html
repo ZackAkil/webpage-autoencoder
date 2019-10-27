@@ -6,9 +6,11 @@
 
 <body>
 
-    <canvas id="canvas" width="150" height="60"></canvas>
+    <canvas id="canvas" width="250" height="100"></canvas>
 
     <script>
+        // const INPUT_SHAPE = [250, 100]
+        const INPUT_SHAPE = [150, 60]
         // const model = tf.loadLayersModel('model.json');
         var model;
         tf.loadLayersModel('model/model.json').then((models) => {
@@ -30,7 +32,7 @@
 
 
         function draw(image_data) {
-            var imageData = ctx.createImageData(150, 60);
+            var imageData = ctx.createImageData(INPUT_SHAPE[0], INPUT_SHAPE[1]);
             for (var i = 0; i < imageData.data.length; i += 4) {
                 const col = image_data[i / 4] * 255
                 // const col = 100
@@ -76,13 +78,40 @@
         });
 
 
+        var y_noise = 0
+        var y_noise_direction = 0.1
+        const noise_rate = 0.015
+        const noise_boundary = 0.20
+
+        setInterval(function () {
+            y_noise += y_noise_direction
+            if (y_noise > noise_boundary) {
+                y_noise_direction = -noise_rate
+            } else if (y_noise < -noise_boundary) {
+                y_noise_direction = noise_rate
+            }
+        }, 1000 / 20);
+
+        var x_noise = 0
+        var x_noise_direction = 0.1
+
+        setInterval(function () {
+            x_noise += x_noise_direction
+            if (x_noise > noise_boundary) {
+                x_noise_direction = -noise_rate
+            } else if (x_noise < -noise_boundary) {
+                x_noise_direction = noise_rate
+            }
+        }, 1000 / 30);
+
+
         setInterval(function () {
             // normilise values to the encoding space
             const norm_mouse_x = ((mouse_x / get_width()) * 4) - 2
             const norm_mouse_y = ((mouse_y / get_height()) * 4) - 2
-            predict(norm_mouse_x, norm_mouse_y)
+            predict(norm_mouse_x + x_noise, norm_mouse_y + y_noise )
             // console.log(norm_mouse_x, norm_mouse_y)
-        }, 1000 / 25);
+        }, 1000 / 10);
 
     </script>
 </body>
