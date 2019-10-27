@@ -1,4 +1,4 @@
-# Webpage Auto-encoder
+# Webpage Autoencoder
 ![demo](demo.gif)
 
 Showing how you can embed and functioning auto-encoder inside a webpage using tensorflow.js.
