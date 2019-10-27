@@ -1,12 +1,21 @@
 <html>
 <header>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
-
+    <style>
+        canvas {
+            image-rendering: optimizeSpeed;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: -o-crisp-edges;
+            image-rendering: pixelated;
+            -ms-interpolation-mode: nearest-neighbor;
+        }
+    </style>
 </header>
 
 <body>
 
-    <canvas id="canvas" width="250" height="100"></canvas>
+    <canvas id="canvas" width="290" height="110"></canvas>
 
     <script>
         // const INPUT_SHAPE = [250, 100]
@@ -29,21 +38,41 @@
 
         var canvas = document.getElementById('canvas');
         var ctx = canvas.getContext('2d');
+        ctx.scale(2, 2);
 
 
         function draw(image_data) {
             var imageData = ctx.createImageData(INPUT_SHAPE[0], INPUT_SHAPE[1]);
             for (var i = 0; i < imageData.data.length; i += 4) {
-                const col = image_data[i / 4] * 255
-                // const col = 100
-                imageData.data[i] = col;     // red
-                imageData.data[i + 1] = col; // green
-                imageData.data[i + 2] = col; // blue
-                imageData.data[i + 3] = 255;
+                // const col = image_data[i / 4] * 255
+                // imageData.data[i] = col;     // red
+                // imageData.data[i + 1] = col; // green
+                // imageData.data[i + 2] = col; // blue
+                // imageData.data[i + 3] = 255;
+
+                // var col = 0
+                if (image_data[i / 4] < 0.5) {
+                    // col = 255
+                    imageData.data[i] = 48;     // red
+                    imageData.data[i + 1] = 58; // green
+                    imageData.data[i + 2] = 165; // blue
+                    imageData.data[i + 3] = 255;
+                } else{
+                    imageData.data[i] = 255;     // red
+                    imageData.data[i + 1] = 255; // green
+                    imageData.data[i + 2] = 255; // blue
+                    imageData.data[i + 3] = 255;
+                }
+                // imageData.data[i] = col;     // red
+                // imageData.data[i + 1] = col; // green
+                // imageData.data[i + 2] = col; // blue
+                // imageData.data[i + 3] = 255;
             }
-            // console.log(imageData)
-            // console.log(ctx)
+
+
             ctx.putImageData(imageData, 0, 0);
+            ctx.drawImage(ctx.canvas, 0, 0);
+
         }
 
         function get_width() {
@@ -109,7 +138,7 @@
             // normilise values to the encoding space
             const norm_mouse_x = ((mouse_x / get_width()) * 4) - 2
             const norm_mouse_y = ((mouse_y / get_height()) * 4) - 2
-            predict(norm_mouse_x + x_noise, norm_mouse_y + y_noise )
+            predict(norm_mouse_x + x_noise, norm_mouse_y + y_noise)
             // console.log(norm_mouse_x, norm_mouse_y)
         }, 1000 / 10);
 
