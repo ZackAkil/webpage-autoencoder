@@ -9,6 +9,7 @@
             image-rendering: -o-crisp-edges;
             image-rendering: pixelated;
             -ms-interpolation-mode: nearest-neighbor;
+            width:100%
         }
     </style>
 </header>
@@ -140,7 +141,7 @@
             const norm_mouse_y = ((mouse_y / get_height()) * 4) - 2
             predict(norm_mouse_x + x_noise, norm_mouse_y + y_noise)
             // console.log(norm_mouse_x, norm_mouse_y)
-        }, 1000 / 10);
+        }, 1000 / 20);
 
     </script>
 </body>
