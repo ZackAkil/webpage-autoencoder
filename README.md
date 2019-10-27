@@ -6,4 +6,4 @@ This was inspired by the learning I did through reading David Foster's book [Gen
 # [Play with the demo](https://zackakil.github.io/webpage-autoencoder)
 
 I've also implimented this element in my personal website: 
-## [zackakil.com](https://zackakil.com)
+## [zackakil.com](https://www.zackakil.com)
