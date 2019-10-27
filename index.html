@@ -44,6 +44,26 @@
             ctx.putImageData(imageData, 0, 0);
         }
 
+        function get_width() {
+            return Math.max(
+                document.body.scrollWidth,
+                document.body.offsetWidth,
+                document.documentElement.scrollWidth,
+                document.documentElement.offsetWidth,
+                document.documentElement.clientWidth
+            );
+        }
+
+        function get_height() {
+            return Math.max(
+                document.body.scrollHeight,
+                document.body.offsetHeight,
+                document.documentElement.scrollHeight,
+                document.documentElement.offsetHeight,
+                document.documentElement.clientHeight
+            );
+        }
+
 
         var mouse_x = 0
         var mouse_y = 0
@@ -57,8 +77,12 @@
 
 
         setInterval(function () {
-            predict(mouse_x, mouse_y)
-        }, 1000 / 15);
+            // normilise values to the encoding space
+            const norm_mouse_x = ((mouse_x / get_width()) * 4) - 2
+            const norm_mouse_y = ((mouse_y / get_height()) * 4) - 2
+            predict(norm_mouse_x, norm_mouse_y)
+            console.log(norm_mouse_x, norm_mouse_y)
+        }, 1000 / 25);
 
     </script>
 </body>
